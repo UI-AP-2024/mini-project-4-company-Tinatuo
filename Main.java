@@ -20,7 +20,7 @@ abstract class User{
     public int getPhoneNumber() {
         return phoneNumber;
     }
-    abstract public String getBasicInformation(String firstAndLastName,int phoneNumber , String hiringDate);
+    abstract public String getBasicInformation();
 }
 abstract class Employee extends User{
     private String hiringDate;
@@ -39,9 +39,9 @@ abstract class Employee extends User{
     abstract public double getSalary();
     abstract public double work(int x);
     @Override
-    public final String getBasicInformation(String firstAndLastName, int phoneNumber,String hiringDate){
+    public final String getBasicInformation(){
         String string;
-        string="First and Last name: "+firstAndLastName+"\nPhone number: "+ String.valueOf(phoneNumber)+"\nHiring date: "+hiringDate;
+        string="First and Last name: "+this.getFirstAndLastName()+"\nPhone number: "+ String.valueOf(this.getPhoneNumber())+"\nHiring date: "+hiringDate;
         return string;
     }
 
@@ -75,10 +75,10 @@ class FullTimeEmployee extends Employee{
         return (double)workingDay;
     }
 }
-class Parttimeemployee extends Employee{
+class PartTimeEmployee extends Employee{
 final private double hourlyWages;
 private double workingHours;
-    Parttimeemployee(String firstAndLastName, int phoneNumber, String hiringDate, double hourlyWages) {
+    PartTimeEmployee(String firstAndLastName, int phoneNumber, String hiringDate, double hourlyWages) {
         super(firstAndLastName, phoneNumber, hiringDate);
         this.hourlyWages = hourlyWages;
     }
@@ -138,11 +138,33 @@ class Admin extends User{
     }
 
     @Override
-    public String getBasicInformation(String firstAndLastName, int phoneNumber, String hiringDate) {
-        return null;
+    public String getBasicInformation() {
+        String string;
+        string="First and Last name: "+admin.getFirstAndLastName()+"\nPhone number: "+ String.valueOf(admin.getPhoneNumber());
+        return string;
     }
-    public void addEmployee(Employee employee,String firstAndLastName, int phoneNumber,String hiringDate){
-        Employee employee1 = new Employee(firstAndLastName,phoneNumber,hiringDate);
+    public void addEmployee(Employee employee,String firstAndLastName, int phoneNumber,String hiringDate,EmployeeType type,double salary){
+        if(type==EmployeeType.FULLTIME){
+            FullTimeEmployee newEmployee=new FullTimeEmployee(firstAndLastName,phoneNumber,hiringDate,salary);
+            employees.add(newEmployee);
+        } else if(type==EmployeeType.PARTTIME){
+            PartTimeEmployee newEmployee=new PartTimeEmployee(firstAndLastName,phoneNumber,hiringDate,salary);
+            employees.add(newEmployee);
+        } else if(type==EmployeeType.PROJECT){
+            ProjectEmploye newEmployee=new ProjectEmploye(firstAndLastName,phoneNumber,hiringDate,salary);
+            employees.add(newEmployee);
+        }
 
     }
+    public String showUser(){
+        String string;
+        string="Admin:"+"\n"+admin.getBasicInformation()+"\nEmployees:";
+        for(int i=0;i<employees.size();i++){
+            string=string+"\n"+employees.get(i).getBasicInformation();
+        }
+        return string;
+    }
+}
+enum EmployeeType{
+    FULLTIME,PARTTIME,PROJECT
 }
