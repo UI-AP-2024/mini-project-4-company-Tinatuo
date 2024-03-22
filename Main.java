@@ -2,13 +2,32 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-
+        Admin.getAdmin("Tina Jouzdani","1234567");
+        //k=0
+        Admin.getAdmin().addEmployee("Soofia Akbari","097636","1400/6/8",EmployeeType.FULLTIME,50);
+        //k=1
+        Admin.getAdmin().addEmployee("Farzaneh Khorsandi","875368","1401/2/3",EmployeeType.PROJECT,100);
+        //k=2
+        Admin.getAdmin().addEmployee("Mahshid Hajalizadeh","35799","1400/5/9",EmployeeType.PARTTIME,70);
+        //k=3
+        Admin.getAdmin().addEmployee("Mehrgol Jenabpour","8397","1402/9/12",EmployeeType.PARTTIME,80);
+        //k=4
+        Admin.getAdmin().addEmployee("Bahareh Rahnama","376780","1401/12/9",EmployeeType.PROJECT,90);
+        Admin.getAdmin().getEmployees().get(0).work(70);
+        Admin.getAdmin().getEmployees().get(1).work(5);
+        Admin.getAdmin().getEmployees().get(2).work(100);
+        Admin.getAdmin().getEmployees().get(3).work(110);
+        Admin.getAdmin().getEmployees().get(4).work(7);
+        System.out.println("Employees' salary:");
+        for(int k = 0;k<Admin.getAdmin().getEmployees().size();k++){
+            System.out.println(Admin.getAdmin().getEmployees().get(k).getFirstAndLastName()+" : "+Admin.getAdmin().getEmployees().get(k).getSalary()+" $");
+        }
     }
 }
 abstract class User{
     private String firstAndLastName;
-    private int phoneNumber;
-    User(String firstAndLastName,int phoneNumber){
+    private String phoneNumber;
+    User(String firstAndLastName,String phoneNumber){
         this.firstAndLastName=firstAndLastName;
         this.phoneNumber=phoneNumber;
     }
@@ -17,14 +36,14 @@ abstract class User{
         return firstAndLastName;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
     abstract public String getBasicInformation();
 }
 abstract class Employee extends User{
     private String hiringDate;
-    Employee(String firstAndLastName, int phoneNumber,String hiringDate) {
+    Employee(String firstAndLastName, String phoneNumber,String hiringDate) {
         super(firstAndLastName, phoneNumber);
         this.hiringDate=hiringDate;
     }
@@ -41,7 +60,7 @@ abstract class Employee extends User{
     @Override
     public final String getBasicInformation(){
         String string;
-        string="First and Last name: "+this.getFirstAndLastName()+"\nPhone number: "+ String.valueOf(this.getPhoneNumber())+"\nHiring date: "+hiringDate;
+        string="First and Last name: "+this.getFirstAndLastName()+"\nPhone number: "+ this.getPhoneNumber()+"\nHiring date: "+hiringDate;
         return string;
     }
 
@@ -49,7 +68,7 @@ abstract class Employee extends User{
 class FullTimeEmployee extends Employee{
     private int workingDay;
     private final double salary;
-    FullTimeEmployee(String firstAndLastName, int phoneNumber, String hiringDate,double salary) {
+    FullTimeEmployee(String firstAndLastName, String phoneNumber, String hiringDate,double salary) {
         super(firstAndLastName, phoneNumber, hiringDate);
         this.salary = salary;
     }
@@ -78,7 +97,7 @@ class FullTimeEmployee extends Employee{
 class PartTimeEmployee extends Employee{
 final private double hourlyWages;
 private double workingHours;
-    PartTimeEmployee(String firstAndLastName, int phoneNumber, String hiringDate, double hourlyWages) {
+    PartTimeEmployee(String firstAndLastName, String phoneNumber, String hiringDate, double hourlyWages) {
         super(firstAndLastName, phoneNumber, hiringDate);
         this.hourlyWages = hourlyWages;
     }
@@ -100,7 +119,7 @@ private double workingHours;
 class ProjectEmploye extends Employee{
     int numberOfProject;
     final private double wage;
-    ProjectEmploye(String firstAndLastName, int phoneNumber, String hiringDate, double wage) {
+    ProjectEmploye(String firstAndLastName, String phoneNumber, String hiringDate, double wage) {
         super(firstAndLastName, phoneNumber, hiringDate);
         this.wage = wage;
     }
@@ -121,10 +140,10 @@ class ProjectEmploye extends Employee{
 class Admin extends User{
     private static Admin admin;
     private ArrayList<Employee> employees=new ArrayList<Employee>();
-    private Admin(String firstAndLastName, int phoneNumber) {
+    private Admin(String firstAndLastName, String phoneNumber) {
         super(firstAndLastName, phoneNumber);
     }
-    public Admin getAdmin(String firstAndLastName, int phoneNumber){
+    public static Admin getAdmin(String firstAndLastName, String phoneNumber){
         if(admin!=null){
             return admin;
         }else{
@@ -133,17 +152,22 @@ class Admin extends User{
         }
 
     }
-    public Admin getAdmin(){
+
+    public ArrayList<Employee> getEmployees() {
+        return employees;
+    }
+
+    public static Admin getAdmin(){
         return admin;
     }
 
     @Override
     public String getBasicInformation() {
         String string;
-        string="First and Last name: "+admin.getFirstAndLastName()+"\nPhone number: "+ String.valueOf(admin.getPhoneNumber());
+        string="First and Last name: "+admin.getFirstAndLastName()+"\nPhone number: "+ admin.getPhoneNumber();
         return string;
     }
-    public void addEmployee(Employee employee,String firstAndLastName, int phoneNumber,String hiringDate,EmployeeType type,double salary){
+    public void addEmployee(String firstAndLastName, String phoneNumber,String hiringDate,EmployeeType type,double salary){
         if(type==EmployeeType.FULLTIME){
             FullTimeEmployee newEmployee=new FullTimeEmployee(firstAndLastName,phoneNumber,hiringDate,salary);
             employees.add(newEmployee);
