@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -93,5 +95,54 @@ private double workingHours;
     public double work(int hours) {
         workingHours+=hours;
         return workingHours;
+    }
+}
+class ProjectEmploye extends Employee{
+    int numberOfProject;
+    final private double wage;
+    ProjectEmploye(String firstAndLastName, int phoneNumber, String hiringDate, double wage) {
+        super(firstAndLastName, phoneNumber, hiringDate);
+        this.wage = wage;
+    }
+
+    @Override
+    public double getSalary() {
+        double y=numberOfProject*wage;
+        numberOfProject-=numberOfProject;
+        return y;
+    }
+
+    @Override
+    public double work(int project) {
+        numberOfProject+=project;
+        return (double)numberOfProject;
+    }
+}
+class Admin extends User{
+    private static Admin admin;
+    private ArrayList<Employee> employees=new ArrayList<Employee>();
+    private Admin(String firstAndLastName, int phoneNumber) {
+        super(firstAndLastName, phoneNumber);
+    }
+    public Admin getAdmin(String firstAndLastName, int phoneNumber){
+        if(admin!=null){
+            return admin;
+        }else{
+            admin=new Admin(firstAndLastName,phoneNumber);
+            return admin;
+        }
+
+    }
+    public Admin getAdmin(){
+        return admin;
+    }
+
+    @Override
+    public String getBasicInformation(String firstAndLastName, int phoneNumber, String hiringDate) {
+        return null;
+    }
+    public void addEmployee(Employee employee,String firstAndLastName, int phoneNumber,String hiringDate){
+        Employee employee1 = new Employee(firstAndLastName,phoneNumber,hiringDate);
+
     }
 }
